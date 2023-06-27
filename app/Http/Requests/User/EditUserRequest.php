@@ -4,25 +4,24 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUserREquest extends FormRequest
+class EditUserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+
     public function authorize(): bool
     {
         return true;
     }
+
     public function rules(): array
     {
         return [
-            'number_id'=>['required','unique:users,number_id','numeric'],
+            'number_id'=>['required',"unique:users,number_id,{$this->user->id}",'numeric'],
             'name'=>['required','string'],
             'last_name'=>['required','string'],
             'address'=>['required'],
-            'cellphone'=>['required','numeric','unique:users,cellphone'],
-            'email'=>['required','email','unique:users,email'],
-            'password'=>['required','min:8'],
+            'cellphone'=>['required','numeric',"unique:users,cellphone,{$this->user->id}"],
+            'email'=>['required','email',"unique:users,email,{$this->user->id}"],
+            'password'=>['min:8','nullable','confirmed'],
         ];
     }
     public function messages(){
@@ -50,7 +49,7 @@ class CreateUserREquest extends FormRequest
 
             'password.required'=>'La contraseña es requerida',
             'password.min'=>'La contraseña debe tener al menos 8 caracteres',
+            'password.confirmed'=>'Las contraseñas deben coincidir',
         ];
     }
 }
-
