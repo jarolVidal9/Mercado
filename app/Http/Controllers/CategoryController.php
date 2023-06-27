@@ -11,4 +11,20 @@ class CategoryController extends Controller
         $categories = Category::get();
         return response()->json(['categories'=>$categories], 200);
     }
+    public function getACategory(Category $category){
+        return response()->json(['category'=>$category], 200);
+    }
+    public function createCategory(Request $request){
+        $category = new Category($request->all());
+        $category->save();
+        return response()->json(['category'=>$category], 202);
+    }
+    public function editCategory(Category $category,Request $request){
+        $category->update($request->all());
+        return response()->json(['category'=>$category->refresh()], 200);
+    }
+    public function deleteCategory(Category $category) {
+        $category->delete();
+        return response()->json([], 200);
+    }
 }

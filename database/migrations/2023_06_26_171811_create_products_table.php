@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 return new class extends Migration
 {
@@ -15,11 +16,12 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('category_id')->unsigned();
             $table->string('name');
+            $table->bigInteger('price');
             $table->integer('stock')->unsigned();
             $table->text('description');
             $table->string('imagen')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('category_id')
             ->references('id')
@@ -28,9 +30,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');

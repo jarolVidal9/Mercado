@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -12,15 +13,27 @@ Route::group(['prefix'=>'users','controller'=>UserController::class], function()
     Route::get('/GetAUser/{user}','getAUser');
     Route::post('/CreateUser','createUser');
     Route::put('/EditUser/{user}','EditUser');
-    Route::delete('/DeleteUser/{user}','');
+    Route::delete('/DeleteUser/{user}','deleteUser');
 });
 
 Route::group(['prefix'=>'products','controller'=>ProductController::class],function(){
     Route::get('/GetAllProducts','getAllProducts');
     Route::get('/GetAProduct/{product}','getAProduct');
+    Route::post('/CreateProduct','createProduct');
+    Route::put('/EditProduct','editProduct');
+    Route::delete('/DeleteProduct/{product}','deleteProduct');
 });
 
 Route::group(['prefix'=>'categories','controller'=>CategoryController::class],function(){
     Route::get('/GetAllCategories','getAllCategories');
+    Route::get('/GetACategory/{category}','getACategory');
+    Route::post('/CreateCategory','createCategory');
+    Route::put('/EditCategory/{category}','editCategory');
+    Route::delete('/DeleteCategory/{category}','deleteCategory');
+});
+
+
+Route::group(['prefix'=>'carts','controller'=>CartController::class],function () {
+
 });
 
