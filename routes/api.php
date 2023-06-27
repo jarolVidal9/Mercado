@@ -18,6 +18,7 @@ Route::group(['prefix'=>'users','controller'=>UserController::class], function()
 
 Route::group(['prefix'=>'products','controller'=>ProductController::class],function(){
     Route::get('/GetAllProducts','getAllProducts');
+    Route::get('/GetAllProductsForCategory','getAllProductsForCategory');
     Route::get('/GetAProduct/{product}','getAProduct');
     Route::post('/CreateProduct','createProduct');
     Route::put('/EditProduct','editProduct');
