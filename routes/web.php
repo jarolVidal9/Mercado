@@ -7,6 +7,9 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +23,14 @@ use App\Http\Controllers\Auth\VerificationController;
 
 Route::get('/', function () {
     return view('home');
+});
+
+Route::group(['prefix'=>'users','controller'=>UserController::class],function (){
+    route::get('/','showUsers')->name('users');
+});
+
+Route::group(['prefix'=>'products','controller'=>ProductController::class],function (){
+    route::get('/','showProductsAdmin')->name('productsAdmin');
 });
 
 Route::group(['controller' => LoginController::class], function () {
