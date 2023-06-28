@@ -1,7 +1,14 @@
 <template>
     <div>
-        <h1>Usuarios</h1>
         <div class="table-responsive border shadow p-3">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h1>Usuarios</h1>
+                </div>
+                <div>
+                    <button @click="CreateUser()" class="btn btn-success" href="#" role="button">Crear Usuario</button>
+                </div>
+            </div>
             <table class="table table-striped">
                 <thead class="table-dark">
                     <tr>
@@ -23,25 +30,34 @@
                         <td>{{ user.cellphone }}</td>
                         <td>{{ user.email }}</td>
                         <td>Admin</td>
-                        <td class="roe">
-                            <button @click="getAUSer(user.id)" name="" id="" class="col btn btn-warning me-2" href="#"
-                                role="button">Editar</button>
-                            <a name="" id="" class="col btn btn-danger" href="#" role="button">Eliminar</a>
+                        <td>
+                            <div class="d-flex justify-content-start">
+                                <button @click="EditButton(user.id)" name="" id="" class="col btn btn-warning me-2"
+                                    role="button">Editar</button>
+                                <button name="" id="" class="col btn btn-danger" role="button">Eliminar</button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <modal-form></modal-form>
+    <section v-if="load_modal">
+        <modal-form :user_data="user" />
+    </section>
 </template>
 
 <script>
 import ModalForm from './Modal.vue'
 export default {
+    components: {
+        ModalForm,
+    },
     data() {
         return {
             users: [],
+            load_modal: false,
+            user: null
         }
     },
     created() {
@@ -51,14 +67,21 @@ export default {
         index() {
             this.getAllUsers()
         },
-        async getAUSer(user_id) {
+        async EditButton(user_id) {
             try {
                 const { data } = await axios.get(`/api/users/GetAUser/${user_id}`)
-                console.log(data.user)
+                this.user = data.user
+                this.openModal()
             } catch (error) {
-
+                console.log(error);
             }
-
+        },
+        async CreateUser() {
+            try {
+                this.openModal()
+            } catch (error) {
+                console.error(error);
+            }
         },
         async getAllUsers() {
             try {
@@ -67,15 +90,26 @@ export default {
             } catch (error) {
                 console.error(error);
             }
+        },
+        openModal() {
+            this.load_modal = true;
+            setTimeout(() => {
+                this.modal = new bootstrap.Modal(document.getElementById('modalId'), {
+                    keyboard: false
+                });
+                this.modal.show();
+                const modal = document.getElementById('modalId');
+                modal.addEventListener('hidden.bs.modal', () => {
+                    this.load_modal = false
+                    this.user = null
+                })
+            }, 200);
 
         },
-        async deleteUser() {
-            try {
-
-            } catch (error) {
-
-            }
+        closeModal() {
+            this.getAllUsers()
         }
+
     }
 }
 </script>

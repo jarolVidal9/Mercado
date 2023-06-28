@@ -8,7 +8,7 @@
                         <h6>ver mas...</h6>
                     </a>
                 </div>
-                <div class="d-flex d-flex justify-content-center flex-wrap m-2">
+                <div class="d-flex justify-content-center flex-wrap m-2">
                     <div v-for="(product, index) in categoryProduct.products" :key="index">
                         <div class="card m-2" style="width: 12rem; height: 37rem;">
                             <img src="https://http2.mlstatic.com/D_NQ_NP_2X_612155-MLA54687684485_032023-F.webp"
