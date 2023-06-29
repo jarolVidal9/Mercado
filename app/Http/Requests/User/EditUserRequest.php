@@ -39,15 +39,13 @@ class EditUserRequest extends FormRequest
             'address.required'=> 'La dirección es requerida es requerida',
 
             'cellphone.required'=>'El número de celular es requerido',
-            'cellphone.numeric'=>'El número debe ser numerico',
+            'cellphone.numeric'=>'El campo debe ser numerico',
             'cellphone.unique'=>'El número de celular ya se encuentra asociado a una cuenta',
 
             'email.required'=>'El email es requerido',
             'email.email'=>'El email no tiene un formato valido',
             'email.unique'=>'El email ya esta asociado a una cuenta',
 
-
-            'password.required'=>'La contraseña es requerida',
             'password.min'=>'La contraseña debe tener al menos 8 caracteres',
             'password.confirmed'=>'Las contraseñas deben coincidir',
         ];

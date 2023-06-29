@@ -34,7 +34,7 @@
                             <div class="d-flex justify-content-start">
                                 <button @click="EditButton(user.id)" name="" id="" class="col btn btn-warning me-2"
                                     role="button">Editar</button>
-                                <button name="" id="" class="col btn btn-danger" role="button">Eliminar</button>
+                                <button @click="deleteUser(user.id)" name="" id="" class="col btn btn-danger" role="button">Eliminar</button>
                             </div>
                         </td>
                     </tr>
@@ -57,7 +57,8 @@ export default {
         return {
             users: [],
             load_modal: false,
-            user: null
+            user: null,
+            modal:null
         }
     },
     created() {
@@ -107,7 +108,33 @@ export default {
 
         },
         closeModal() {
+            this.modal.hide()
             this.getAllUsers()
+        },
+        async deleteUser(user_id){
+            try {
+                const result=await swal.fire({
+                    title: 'Seguro quieres borrar el Usuario?',
+                    text: "Esta acción no se puede revertir",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Eliminar',
+                    cancelButtonText:'Cancelar'
+                })
+                    if (result.isConfirmed) {
+                        await axios.delete(`/api/users/DeleteUser/${user_id}`)
+                        this.getAllUsers()
+                        swal.fire(
+                            'Eliminado',
+                            'El usuario se ha eliminado.',
+                            'success'
+                        )
+                    }
+            } catch (error) {
+                console.error(error);
+            }
         }
 
     }

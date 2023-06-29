@@ -13,8 +13,4 @@ const app = createApp({
         ShowProductsAdmin
     }
 });
-
-
-
-
 app.mount('#app');

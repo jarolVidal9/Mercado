@@ -21,11 +21,13 @@ class UserController extends Controller
     public function createUser(CreateUserRequest $request) {
         $user = new User($request->all());
         $user->save();
-        return response()->json(['user'=>$user], 201);
+        if ($request->ajax()) return response()->json(['user'=>$user], 201);
+        return back()->with('success', 'Usuario creado');
     }
     public function EditUser(User $user,EditUserRequest $request){
         $user->update($request->all());
-        return response()->json(['user'=>$user->refresh()], 200);
+        if ($request->ajax()) return response()->json(['user'=>$user->refresh()], 200);
+        return back()->with('success', 'Usuario actualizado');
     }
     public function deleteUser(User $user){
         $user->delete();

@@ -22,7 +22,7 @@ class CreateUserREquest extends FormRequest
             'address'=>['required'],
             'cellphone'=>['required','numeric','unique:users,cellphone'],
             'email'=>['required','email','unique:users,email'],
-            'password'=>['required','min:8'],
+            'password'=>['required','min:8','confirmed'],
         ];
     }
     public function messages(){
@@ -40,7 +40,7 @@ class CreateUserREquest extends FormRequest
             'address.required'=> 'La dirección es requerida es requerida',
 
             'cellphone.required'=>'El número de celular es requerido',
-            'cellphone.numeric'=>'El número debe ser numerico',
+            'cellphone.numeric'=>'El campo debe ser numerico',
             'cellphone.unique'=>'El número de celular ya se encuentra asociado a una cuenta',
 
             'email.required'=>'El email es requerido',
@@ -50,6 +50,9 @@ class CreateUserREquest extends FormRequest
 
             'password.required'=>'La contraseña es requerida',
             'password.min'=>'La contraseña debe tener al menos 8 caracteres',
+            'password.confirmed'=>'Las contraseñas no coincidenv  ',
+
+
         ];
     }
 }

@@ -12,7 +12,7 @@ Route::group(['prefix'=>'users','controller'=>UserController::class], function()
     Route::get('/GetAllUsers','getAllUsers');
     Route::get('/GetAUser/{user}','getAUser');
     Route::post('/CreateUser','createUser');
-    Route::put('/EditUser/{user}','EditUser');
+    Route::post('/EditUser/{user}','EditUser');
     Route::delete('/DeleteUser/{user}','deleteUser');
 });
 

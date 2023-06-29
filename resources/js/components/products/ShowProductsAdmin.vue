@@ -1,7 +1,14 @@
 <template>
     <div>
-        <h1>Usuarios</h1>
         <div class="table-responsive border shadow p-3">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h1>Productos</h1>
+                </div>
+                <div>
+                    <button @click="createProduct()" class="btn btn-success" href="#" role="button">Crear Producto</button>
+                </div>
+            </div>
             <table class="table table-striped">
                 <thead class="table-dark">
                     <tr>
@@ -17,28 +24,39 @@
                 <tbody>
                     <tr v-for="(product,index) in products" :key="index">
                         <td scope="row">{{ product.category.name }}</td>
-                        <td>{{product.name}} {{ product.name }}</td>
+                        <td>{{product.name}}</td>
                         <td>{{product.stock}}</td>
                         <td>{{product.price}}</td>
                         <td>{{product.description}}</td>
                         <td>{{product.imagen}}</td>
-                        <td class="roe">
-                            <a name="" id="" class="col btn btn-warning me-2" href="#" role="button">Button</a>
-                            <a name="" id="" class="col btn btn-danger" href="#" role="button">Button</a>
+                        <td>
+                            <div class="d-flex justify-content-start">
+                                <button @click="editButton(product.id)" class="col btn btn-warning me-2" role="button">Editar</button>
+                                <button  name="" id="" class="col btn btn-danger" role="button">Eliminar</button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        
     </div>
+    <section v-if="load_modal">
+        <create-edit-modal :product_data="product"/>
+    </section>
 </template>
 
 <script>
+import CreateEditModal from './CreateEdit.vue'
 export default {
+    components: {
+        CreateEditModal,
+    },
     data() {
         return {
-            products: []
+            products: [],
+            load_modal: false,
+            modal: null,
+            product: null
         }
     },
     created() {
@@ -48,16 +66,40 @@ export default {
         index() {
             this.getAllProducts()
         },
-
         async getAllProducts() {
             try {
                 const { data } = await axios.get('/api/products/GetAllProducts')
                 this.products = data.products
-                console.log(this.products);
             } catch (error) {
                 console.error(error);
             }
+        },
+        async createProduct() {
+            this.openModal()
+        },
+        openModal() {
+            this.load_modal = true;
+            setTimeout(() => {
+                this.modal = new bootstrap.Modal(document.getElementById('createEditmodalId'), {
+                    keyboard: false
+                });
+                this.modal.show();
+                const modal = document.getElementById('createEditmodalId');
+                modal.addEventListener('hidden.bs.modal', () => {
+                    this.load_modal = false
+                    this.product = null
+                })
+            }, 200);
+        },
 
+        async editButton(product_id) {
+            try {
+                const { data } = await axios.get(`/api/products/GetAProduct/${product_id}`)
+                this.product = data.product
+                this.openModal()
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }
