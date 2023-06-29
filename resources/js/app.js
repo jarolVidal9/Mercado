@@ -3,14 +3,19 @@ import { createApp } from 'vue';
 import ExampleComponent from './components/ExampleComponent.vue';
 import ShowProducts from './components/products/ShowProductsUsers.vue';
 import ShowProductsAdmin from './components/products/ShowProductsAdmin.vue';
-import ListUsers from './components/users/ListUsers.vue';
+import ShowUsersAdmin from './components/users/ShowUsersAdmin.vue';
+import ShowCategories from './components/categories/ShowCategories.vue';
+
+import vSelect from "vue-select";
 
 const app = createApp({
     components: {
         ExampleComponent,
         ShowProducts,
-        ListUsers,
-        ShowProductsAdmin
+        ShowUsersAdmin,
+        ShowProductsAdmin,
+        ShowCategories
     }
 });
+app.component("v-select", vSelect);
 app.mount('#app');

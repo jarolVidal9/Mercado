@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 
@@ -31,6 +32,10 @@ Route::group(['prefix'=>'users','controller'=>UserController::class],function ()
 
 Route::group(['prefix'=>'products','controller'=>ProductController::class],function (){
     route::get('/','showProductsAdmin')->name('productsAdmin');
+});
+
+Route::group(['prefix'=>'categories','controller'=>CategoryController::class],function (){
+    route::get('/ShowCategories','showCategories')->name('categories');
 });
 
 Route::group(['controller' => LoginController::class], function () {

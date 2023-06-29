@@ -27,4 +27,9 @@ class CategoryController extends Controller
         $category->delete();
         return response()->json([], 200);
     }
+
+    //web
+    public function showCategories(){
+        return view('categories.categories');
+    }
 }

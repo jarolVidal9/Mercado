@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container">
-    <show-users-admin></show-users-admin>
+        <show-categories></show-categories>
     </div>
 @endsection

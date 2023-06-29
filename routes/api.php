@@ -21,7 +21,7 @@ Route::group(['prefix'=>'products','controller'=>ProductController::class],funct
     Route::get('/GetAllProductsForCategory','getAllProductsForCategory');
     Route::get('/GetAProduct/{product}','getAProduct');
     Route::post('/CreateProduct','createProduct');
-    Route::put('/EditProduct','editProduct');
+    Route::post('/EditProduct/{product}','editProduct');
     Route::delete('/DeleteProduct/{product}','deleteProduct');
 });
 

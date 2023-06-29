@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import ModalForm from './Modal.vue'
+import ModalForm from './ModalUsers.vue'
 export default {
     components: {
         ModalForm,

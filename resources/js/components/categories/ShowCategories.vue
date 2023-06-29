@@ -12,27 +12,16 @@
             <table class="table table-striped">
                 <thead class="table-dark">
                     <tr>
-                        <th scope="col">Categoria</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Descripcion</th>
-                        <th scope="col">imagen</th>
-                        <th scope="col">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(product,index) in products" :key="index">
-                        <td scope="row">{{ product.category.name }}</td>
-                        <td>{{product.name}}</td>
-                        <td>{{product.stock}}</td>
-                        <td>{{product.price}}</td>
-                        <td>{{product.description}}</td>
-                        <td>{{product.imagen}}</td>
+                    <tr v-for="(category,index) in categories" :key="index">
+                        <td>{{category.name}}</td>
                         <td>
                             <div class="d-flex justify-content-start">
-                                <button @click="editButton(product.id)" class="col btn btn-warning me-2" role="button">Editar</button>
-                                <button @click="deleteProduct(product.id)"  name="" id="" class="col btn btn-danger" role="button">Eliminar</button>
+                                <button @click="editButton(category.id)" class="col btn btn-warning me-2" role="button">Editar</button>
+                                <button @click="deleteProduct(category.id)"  name="" id="" class="col btn btn-danger" role="button">Eliminar</button>
                             </div>
                         </td>
                     </tr>
@@ -46,14 +35,14 @@
 </template>
 
 <script>
-import CreateEditModal from './ModalProducts.vue'
+import CreateEditModal from './ModalCategories.vue'
 export default {
     components: {
         CreateEditModal,
     },
     data() {
         return {
-            products: [],
+            categories: [],
             load_modal: false,
             modal: null,
             product: null
@@ -64,12 +53,12 @@ export default {
     },
     methods: {
         index() {
-            this.getAllProducts()
+            this.getAllcategories()
         },
-        async getAllProducts() {
+        async getAllcategories() {
             try {
-                const { data } = await axios.get('/api/products/GetAllProducts')
-                this.products = data.products
+                const { data } = await axios.get('/api/categories/GetAllCategories')
+                this.categories = data.categories
             } catch (error) {
                 console.error(error);
             }
@@ -94,7 +83,7 @@ export default {
 
         async editButton(product_id) {
             try {
-                const { data } = await axios.get(`/api/products/GetAProduct/${product_id}`)
+                const { data } = await axios.get(`/api/categories/GetAProduct/${product_id}`)
                 this.product = data.product
                 this.openModal()
             } catch (error) {
@@ -103,7 +92,7 @@ export default {
         },
         closeModal() {
             this.modal.hide()
-            this.getAllProducts()
+            this.getAllcategories()
         },
         async deleteProduct(product_id){
             try {
@@ -118,8 +107,8 @@ export default {
                     cancelButtonText:'Cancelar'
                 })
                     if (result.isConfirmed) {
-                        await axios.delete(`/api/products/DeleteProduct/${product_id}`)
-                        this.getAllProducts()
+                        await axios.delete(`/api/categories/DeleteProduct/${product_id}`)
+                        this.getAllcategories()
                         swal.fire(
                             'Eliminado',
                             'El producto se ha eliminado.',

@@ -12,12 +12,9 @@
                         <div class="col">
                             <div class="mb-3">
                                 <label for="" class="form-label">Categoria</label>
-                                <select class="form-select" name="" id="">
-                                    <option selected>Select one</option>
-                                    <option value="">New Delhi</option>
-                                    <option value="">Istanbul</option>
-                                    <option value="">Jakarta</option>
-                                </select>
+                                <v-select id="category" :options="categories" v-model="product.category_id"
+                                            :reduce="category => category.id" label="name" :clearable="false"></v-select>
+                                <div style="color: red;"  v-if="errors && errors.category_id">{{ errors.category_id[0] }}</div>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Elegir Imagen</label>
@@ -28,6 +25,8 @@
                                 <label for="" class="form-label">Nombre</label>
                                 <input type="text" v-model="product.name" class="form-control" name="name" id="name"
                                     aria-describedby="helpId" placeholder="">
+                                <div style="color: red;"  v-if="errors && errors.name">{{ errors.name[0] }}</div>
+
                             </div>
                         </div>
                         <div class="col">
@@ -35,16 +34,22 @@
                                 <label for="" class="form-label">Stock</label>
                                 <input type="number" v-model="product.stock" class="form-control" name="" id=""
                                     aria-describedby="helpId" placeholder="">
+                                <div style="color: red;"  v-if="errors && errors.stock">{{ errors.stock[0] }}</div>
+                                
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Precio</label>
                                 <input type="number" v-model="product.price" class="form-control" name="" id=""
                                     aria-describedby="helpId" placeholder="">
+                                <div style="color: red;"  v-if="errors && errors.price">{{ errors.price[0] }}</div>
+
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Descripción</label>
                                 <textarea class="form-control" v-model="product.description" name="" id=""
                                     rows="3"></textarea>
+                                <div style="color: red;"  v-if="errors && errors.description">{{ errors.description[0] }}</div>
+
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -68,7 +73,8 @@ export default {
         return {
             is_create: true,
             product: {},
-            categories:{}
+            categories: [],
+            errors:{}
         }
     },
     created() {
@@ -76,8 +82,8 @@ export default {
     },
     methods: {
         index() {
-            this.setProduct()
             this.getCategories()
+            this.setProduct()
         },
         async getCategories() {
             try {
@@ -95,6 +101,7 @@ export default {
         },
         loadFormData() {
             const form_data = new FormData()
+            if (this.product.category_id) form_data.append('category_id', this.product.category_id)
             if (this.product.name) form_data.append('name', this.product.name)
             if (this.product.stock) form_data.append('stock', this.product.stock)
             if (this.product.price) form_data.append('price', this.product.price)
@@ -102,16 +109,32 @@ export default {
             return form_data
         },
         async storeProduct() {
-            console.log('holi');
             try {
                 const productForm = this.loadFormData()
                 if (this.is_create) {
                     await axios.post('/api/products/CreateProduct', productForm)
+                    swal.fire({
+                        icon: 'success',
+                        title: 'El producto se ha guardado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 } else {
-
+                    await axios.post(`/api/products/EditProduct/${this.product.id}`, productForm)
+                    swal.fire({
+                        icon: 'success',
+                        title: 'El producto se ha actualizado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 }
+                this.$parent.closeModal()
             } catch (error) {
-                console.error(error);
+                if (error.response.status == 422) {
+                    this.errors = error.response.data.errors
+                } else {
+                    console.log(error)
+                }
             }
         }
     }

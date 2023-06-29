@@ -32,13 +32,15 @@ class ProductController extends Controller
     {
         $product = new Product($request->all());
         $product->save();
-        return response()->json(['product' => $product], 200);
+        if ($request -> ajax()) return response()->json(['product' => $product], 200);
+        return back()->with('success', 'Producto creado');
     }
 
     public function editProduct(Product $product, CreateProductRequest $request)
     {
         $product->update($request->all());
-        return response()->json(['product' => $product->refresh()], 200);
+        if ($request->ajax()) return response()->json(['product' => $product->refresh()], 200);
+        return back()->with('success', 'Producto editado');
     }
 
     public function deleteProduct(Product $product)

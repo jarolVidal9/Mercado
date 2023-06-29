@@ -24,8 +24,8 @@ class CreateProductRequest extends FormRequest
         return [
             "category_id"=> ['required'],
             "name"=>['required','string'],
-            "price"=>['required','numeric'],
-            "stock"=>['required','numeric'],
+            "price"=>['required','numeric','min:0'],
+            "stock"=>['required','numeric','min:1'],
             "description"=>['required'],
             "imagen" =>['nullable']
         ];
@@ -34,9 +34,12 @@ class CreateProductRequest extends FormRequest
     {
         return[
             "category_id.required"=>" El Producto debe pertecer a alguna categoria",
+            "category_id.required"=>" El Producto debe pertecer a alguna categoria",
             "name.required"=>"El producto debe tener un nombre",
             "stock.required"=>"El stock es requerido",
+            "stock.min"=>"El stock debe ser mayor a cero",
             "price.required"=>"El precio es requerido",
+            "price.min"=>"El precio debe ser mayor a cero",
             "price.numeric"=>"El precio debe ser numerico",
             "stock.numeric"=>"El stock debe ser numerico",
             "description.required"=>"La descripcion es requerida", 
