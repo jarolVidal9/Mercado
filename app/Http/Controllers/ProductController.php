@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Str;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ProductController extends Controller
 {
@@ -31,6 +33,7 @@ class ProductController extends Controller
     public function createProduct(CreateProductRequest $request)
     {
         $product = new Product($request->all());
+        $this->uploadImages($request, $product);
         $product->save();
         if ($request -> ajax()) return response()->json(['product' => $product], 200);
         return back()->with('success', 'Producto creado');
@@ -38,7 +41,10 @@ class ProductController extends Controller
 
     public function editProduct(Product $product, CreateProductRequest $request)
     {
-        $product->update($request->all());
+        if ($request->hasFile('image')) {
+            $this->uploadImages($request, $product);
+        }
+        $product->update($request->except('image'));
         if ($request->ajax()) return response()->json(['product' => $product->refresh()], 200);
         return back()->with('success', 'Producto editado');
     }
@@ -48,9 +54,18 @@ class ProductController extends Controller
         $product->delete();
         return response()->json([], 200);
     }
+    //upload image
+    private function uploadImages($request, &$product)
+    {
+        if (!isset($request->image)) return;
+        $random = Str::random(20);
+        $image_name = "{$random}.{$request->image->clientExtension()}";
+        $product->image = $image_name;
+        $request->image->move(storage_path('app/public/images'), $image_name);
+        $request->image = $image_name;
+    }
 
     //web
-
     public function showProductsAdmin(){
         return view('products.productsAdmin');
     }

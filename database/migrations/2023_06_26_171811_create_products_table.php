@@ -19,7 +19,7 @@ return new class extends Migration
             $table->bigInteger('price');
             $table->integer('stock')->unsigned();
             $table->text('description');
-            $table->string('imagen')->nullable();
+            $table->string('image');
             $table->timestamps();
             $table->softDeletes();
 

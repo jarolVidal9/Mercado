@@ -10,9 +10,9 @@
                 </div>
                 <div class="d-flex justify-content-center flex-wrap m-2">
                     <div v-for="(product, index) in categoryProduct.products" :key="index">
-                        <div class="card m-2" style="width: 12rem; height: 37rem;">
-                            <img src="https://http2.mlstatic.com/D_NQ_NP_2X_612155-MLA54687684485_032023-F.webp"
-                                class="card-img-top img-fluid" alt="...">
+                        <div class="card m-2" style="width: 12rem; height: 28rem;">
+                            <img :src="getImageUrl(product.image)"
+                                class="card-img-top w-100 h-100 img-fluid" alt="...">
                             <div class="card-body">
                                 <h6><strong> ${{ product.price }}</strong></h6>
                                 <h6 class="card-title">{{ product.name }}</h6>
@@ -27,7 +27,7 @@
     </div>
         <section v-else class="text-center">
             <div class="spinner-border text-success" role="status">
-                <span class="visually-hidden">Loading...</span>
+                <span class="visually-hidden">Cargando...</span>
             </div>
         </section>
 </template>
@@ -36,7 +36,7 @@
 export default {
     data() {
         return {
-            categories: []
+            categories: [],
         }
     },
     created() {
@@ -56,6 +56,9 @@ export default {
                 console.error(error);
             }
 
+        },
+        getImageUrl(imageName) {
+            return  "/storage/images/" + imageName;
         }
     }
 }

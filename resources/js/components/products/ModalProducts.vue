@@ -8,7 +8,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row" @submit.prevent="storeProduct">
+                    <form class="row" @submit.prevent="storeProduct" enctype="multipart/form-data">
                         <div class="col">
                             <div class="mb-3">
                                 <label for="" class="form-label">Categoria</label>
@@ -18,8 +18,10 @@
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Elegir Imagen</label>
-                                <input type="file" class="form-control" name="" id="" placeholder=""
-                                    aria-describedby="fileHelpId">
+                                <input type="file" class="form-control" name="" id="file" accept="image/*" @change="loadImage" placeholder=""
+                                    aria-describedby="fileHelpId" >
+                                <div style="color: red;"  v-if="errors && errors.image">{{ errors.image[0] }}</div>
+
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Nombre</label>
@@ -74,7 +76,8 @@ export default {
             is_create: true,
             product: {},
             categories: [],
-            errors:{}
+            errors: {},
+            file: null
         }
     },
     created() {
@@ -102,6 +105,7 @@ export default {
         loadFormData() {
             const form_data = new FormData()
             if (this.product.category_id) form_data.append('category_id', this.product.category_id)
+            if (this.file) form_data.append('image', this.file, this.file.name)
             if (this.product.name) form_data.append('name', this.product.name)
             if (this.product.stock) form_data.append('stock', this.product.stock)
             if (this.product.price) form_data.append('price', this.product.price)
@@ -136,6 +140,9 @@ export default {
                     console.log(error)
                 }
             }
+        },
+        loadImage() {
+            this.file = event.target.files[0]
         }
     }
 }

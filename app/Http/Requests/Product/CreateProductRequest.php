@@ -27,7 +27,7 @@ class CreateProductRequest extends FormRequest
             "price"=>['required','numeric','min:0'],
             "stock"=>['required','numeric','min:1'],
             "description"=>['required'],
-            "imagen" =>['nullable']
+            "image" =>['nullable']
         ];
     }
     public function messages()

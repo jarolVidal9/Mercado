@@ -28,7 +28,7 @@
                         <td>{{product.stock}}</td>
                         <td>{{product.price}}</td>
                         <td>{{product.description}}</td>
-                        <td>{{product.imagen}}</td>
+                        <td>{{product.image}}</td>
                         <td>
                             <div class="d-flex justify-content-start">
                                 <button @click="editButton(product.id)" class="col btn btn-warning me-2" role="button">Editar</button>
