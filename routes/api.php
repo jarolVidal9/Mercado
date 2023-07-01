@@ -29,7 +29,7 @@ Route::group(['prefix'=>'categories','controller'=>CategoryController::class],fu
     Route::get('/GetAllCategories','getAllCategories');
     Route::get('/GetACategory/{category}','getACategory');
     Route::post('/CreateCategory','createCategory');
-    Route::put('/EditCategory/{category}','editCategory');
+    Route::post('/EditCategory/{category}','editCategory');
     Route::delete('/DeleteCategory/{category}','deleteCategory');
 });
 

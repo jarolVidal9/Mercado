@@ -23,7 +23,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="(product,index) in products" :key="index">
-                        <td scope="row">{{ product.category.name }}</td>
+                        <td scope="row" >{{ product.category.name }}</td>
                         <td>{{product.name}}</td>
                         <td>{{product.stock}}</td>
                         <td>{{product.price}}</td>
@@ -70,6 +70,7 @@ export default {
             try {
                 const { data } = await axios.get('/api/products/GetAllProducts')
                 this.products = data.products
+                console.log(this.products);
             } catch (error) {
                 console.error(error);
             }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,7 @@ class CategoryController extends Controller
         return response()->json(['category'=>$category->refresh()], 200);
     }
     public function deleteCategory(Category $category) {
+        $category->Products()->delete();
         $category->delete();
         return response()->json([], 200);
     }

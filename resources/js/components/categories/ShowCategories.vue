@@ -1,51 +1,65 @@
 <template>
-    <div>
-        <div class="table-responsive border shadow p-3">
+    <div class="row">
+        <div class="col-lg-6 border shadow p-3">
+            <div class="">
+                <div class="">
+                    <h1>{{ `${is_create ? 'Crear' : 'Actualizar'} Categoria` }}</h1>
+                    <form action="" @submit.prevent="storeCategory">
+                        <div class="mb-3">
+                          <label for="" class="form-label">Nombre</label>
+                          <input type="text" class="form-control" v-model="category.name"  name="" id="" aria-describedby="helpId" placeholder="">
+                            <div style="color: red;"  v-if="errors && errors.name">{{ errors.name[0] }}</div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" name="" id="" class="btn btn-primary">{{ `${is_create ? 'Crear' : 'Actualizar'}` }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 table-responsive border shadow p-3">
             <div class="d-flex justify-content-between">
                 <div>
-                    <h1>Productos</h1>
+                    <h1>Categorias</h1>
                 </div>
                 <div>
-                    <button @click="createProduct()" class="btn btn-success" href="#" role="button">Crear Producto</button>
+                    <button @click="createCategory()" class="btn btn-success" href="#" role="button">Crear Categoria</button>
                 </div>
             </div>
             <table class="table table-striped">
                 <thead class="table-dark">
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Nombre</th>
+                        <th scope="col">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(category,index) in categories" :key="index">
+                        <td>{{ index+1 }}</td>
                         <td>{{category.name}}</td>
                         <td>
                             <div class="d-flex justify-content-start">
                                 <button @click="editButton(category.id)" class="col btn btn-warning me-2" role="button">Editar</button>
-                                <button @click="deleteProduct(category.id)"  name="" id="" class="col btn btn-danger" role="button">Eliminar</button>
+                                <button @click="deleteCategory(category.id)"  name="" id="" class="col btn btn-danger" role="button">Eliminar</button>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        
     </div>
-    <section v-if="load_modal">
-        <create-edit-modal :product_data="product"/>
-    </section>
 </template>
 
 <script>
-import CreateEditModal from './ModalCategories.vue'
 export default {
-    components: {
-        CreateEditModal,
-    },
     data() {
         return {
             categories: [],
-            load_modal: false,
-            modal: null,
-            product: null
+            category: {},
+            is_create: true,
+            errors: null
         }
     },
     created() {
@@ -63,41 +77,58 @@ export default {
                 console.error(error);
             }
         },
-        async createProduct() {
-            this.openModal()
-        },
-        openModal() {
-            this.load_modal = true;
-            setTimeout(() => {
-                this.modal = new bootstrap.Modal(document.getElementById('createEditmodalId'), {
-                    keyboard: false
-                });
-                this.modal.show();
-                const modal = document.getElementById('createEditmodalId');
-                modal.addEventListener('hidden.bs.modal', () => {
-                    this.load_modal = false
-                    this.product = null
-                })
-            }, 200);
-        },
-
-        async editButton(product_id) {
+        async editButton(category_id) {
             try {
-                const { data } = await axios.get(`/api/categories/GetAProduct/${product_id}`)
-                this.product = data.product
-                this.openModal()
+                const { data } = await axios.get(`/api/categories/GetACategory/${category_id}`)
+                this.category = data.category
+                this.is_create=false
             } catch (error) {
                 console.log(error);
             }
         },
-        closeModal() {
-            this.modal.hide()
-            this.getAllcategories()
+        loadFormData() {
+            const form_data = new FormData()
+            if (this.category.name) form_data.append('name', this.category.name)
+            return form_data
         },
-        async deleteProduct(product_id){
+        async storeCategory() {
+            try {
+                const categoryForm = this.loadFormData()
+                if (this.is_create) {
+                    await axios.post('/api/categories/CreateCategory', categoryForm)
+                    swal.fire({
+                        icon: 'success',
+                        title: 'La categoria se ha guardado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                } else {
+                    await axios.post(`/api/categories/EditCategory/${this.category.id}`, categoryForm)
+                    swal.fire({
+                        icon: 'success',
+                        title: 'El producto se ha actualizado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })  
+                }
+                this.getAllcategories()
+                this.category={}
+            } catch (error) {
+                if (error.response.status == 422) {
+                    this.errors = error.response.data.errors
+                } else {
+                    console.log(error)
+                }
+            }
+        },
+        createCategory() {
+            this.is_create = true
+            this.category = {}
+        },
+        async deleteCategory(category_id){
             try {
                 const result=await swal.fire({
-                    title: 'Seguro quieres borrar el producto?',
+                    title: 'Seguro quieres borrar la categoria?',
                     text: "Esta acción no se puede revertir",
                     icon: 'warning',
                     showCancelButton: true,
@@ -107,11 +138,11 @@ export default {
                     cancelButtonText:'Cancelar'
                 })
                     if (result.isConfirmed) {
-                        await axios.delete(`/api/categories/DeleteProduct/${product_id}`)
+                        await axios.delete(`/api/categories/DeleteCategory/${category_id}`)
                         this.getAllcategories()
                         swal.fire(
                             'Eliminado',
-                            'El producto se ha eliminado.',
+                            'La categoria se ha eliminado.',
                             'success'
                         )
                     }
