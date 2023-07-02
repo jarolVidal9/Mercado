@@ -1,20 +1,15 @@
 <template>
     <div class="container">
-        <div v-if="categories.length>0">
-            <div v-for="(categoryProduct, index) in categories" :key="index">
-                <div v-if="categoryProduct.products.length > 0" class="shadow-lg p-3 mb-5 bg-body rounded">
-                    <div class="d-flex flex-wrap">
-                        <h6 class="me-5">Categoria: {{ categoryProduct.name }}</h6>
-                        <a name="" id="" class="" href="#" role="button" @click="RedirectProductsByCategory(categoryProduct.id)">ver mas...</a>
-                    </div>
+        <h1>{{ categoryCopy.name }}</h1>
+            <div v-if="products.length>0">
                     <div class="d-flex justify-content-center flex-wrap m-2">
-                        <div v-for="(product, index) in categoryProduct.products" :key="index">
+                        <div v-for="(product, index) in products" :key="index">
                             <div class="card m-2" style="width: 12rem; height: 28rem;">
                                 <img v-if="product.image" :src="getImageUrl(product.image)"
-                                    class="card-img-top h-100" alt="...">
+                                    class="card-img-top w-100 h-100 img-fluid" alt="...">
                                 <section v-else>
                                     <img  src="https://images.pexels.com/photos/2582928/pexels-photo-2582928.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                                    class="card-img-top h-100" alt="...">
+                                    class="card-img-top w-100 h-100 img-fluid" alt="...">
                                 </section>
                                 <div class="card-body h-50">
                                     <h6><strong> ${{ product.price }}</strong></h6>
@@ -24,23 +19,23 @@
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
-        </div>
             <section v-else class="text-center">
                 <div class="spinner-border text-success" role="status">
                     <span class="visually-hidden">Cargando...</span>
                 </div>
             </section>
     </div>
-    
 </template>
 
 <script>
+
 export default {
+    props:['category'],
     data() {
         return {
-            categories: [],
+            products: [],
+            categoryCopy: null
         }
     },
     created() {
@@ -48,13 +43,16 @@ export default {
     },
     methods: {
         index() {
-            this.getAllCategoriesProductsWithCategories()
+            this.getCategory()
+            this.getProductByCategory()
         },
-
-        async getAllCategoriesProductsWithCategories() {
+        getCategory() {
+            this.categoryCopy = this.category
+        },
+        async getProductByCategory() {
             try {
-                const { data } = await axios.get('/api/products/GetAllProductsForCategory')
-                this.categories = data.products
+                const { data } = await axios.get(`/products/ProductsByCategory/${this.categoryCopy.id}`)
+                this.products = data.products
                 console.log(this.categories);
             } catch (error) {
                 console.error(error);
@@ -63,9 +61,6 @@ export default {
         },
         getImageUrl(imageName) {
             return  "/storage/images/" + imageName;
-        },
-        RedirectProductsByCategory(category_id) {
-            window.location.href = `products/ShowProductsForCategory/${category_id}`;
         }
     }
 }

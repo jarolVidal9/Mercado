@@ -5,6 +5,8 @@ import ShowProducts from './components/products/ShowProductsUsers.vue';
 import ShowProductsAdmin from './components/products/ShowProductsAdmin.vue';
 import ShowUsersAdmin from './components/users/ShowUsersAdmin.vue';
 import ShowCategories from './components/categories/ShowCategories.vue';
+import ShowProductsCategory from './components/products/ShowProductsCategory.vue';
+
 
 import vSelect from "vue-select";
 
@@ -14,7 +16,8 @@ const app = createApp({
         ShowProducts,
         ShowUsersAdmin,
         ShowProductsAdmin,
-        ShowCategories
+        ShowCategories,
+        ShowProductsCategory
     }
 });
 app.component("v-select", vSelect);

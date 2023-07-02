@@ -25,6 +25,13 @@ class ProductController extends Controller
         });
         return response()->json(['products' => $products], 200);
     }
+    public function productsByCategory(Category $category)
+    {
+        $category->load('products');
+        $products = $category->products;
+        return response()->json(['products' => $products], 200);
+    }
+
 
     public function getAProduct(Product $product)
     {
@@ -68,5 +75,8 @@ class ProductController extends Controller
     //web
     public function showProductsAdmin(){
         return view('products.productsAdmin');
+    }
+    public function showProductsForCategory(Category $category){
+        return view('products.productsForCategory',compact('category'));
     }
 }

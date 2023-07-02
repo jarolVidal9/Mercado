@@ -27,16 +27,42 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix'=>'users','controller'=>UserController::class],function (){
-    route::get('/','showUsers')->name('users');
+    route::get('/','showUsers')->name('users'); //vista
+    Route::get('/GetAllUsers','getAllUsers');
+    Route::get('/GetAUser/{user}','getAUser');
+    Route::post('/CreateUser','createUser');
+    Route::post('/EditUser/{user}','EditUser');
+    Route::delete('/DeleteUser/{user}','deleteUser');
 });
 
 Route::group(['prefix'=>'products','controller'=>ProductController::class],function (){
-    route::get('/','showProductsAdmin')->name('productsAdmin');
+    route::get('/','showProductsAdmin')->name('productsAdmin');//vista
+    route::get('/ShowProductsForCategory/{category}','showProductsForCategory');//vista
+    Route::get('/GetAllProducts','getAllProducts');
+    Route::get('/GetAllProductsForCategory','getAllProductsForCategory');
+    Route::get('/ProductsByCategory/{category}','productsByCategory');
+    Route::get('/GetAProduct/{product}','getAProduct');
+    Route::post('/CreateProduct','createProduct');
+    Route::post('/EditProduct/{product}','editProduct');
+    Route::delete('/DeleteProduct/{product}','deleteProduct');
 });
 
 Route::group(['prefix'=>'categories','controller'=>CategoryController::class],function (){
-    route::get('/ShowCategories','showCategories')->name('categories');
+    route::get('/','showCategories')->name('categories');//vista
+    Route::get('/GetAllCategories','getAllCategories');
+    Route::get('/GetACategory/{category}','getACategory');
+    Route::post('/CreateCategory','createCategory');
+    Route::post('/EditCategory/{category}','editCategory');
+    Route::delete('/DeleteCategory/{category}','deleteCategory');
 });
+
+
+
+
+
+
+
+// LOGIN AND REGISTER
 
 Route::group(['controller' => LoginController::class], function () {
     Route::get('login', 'showLoginForm')->name('login');

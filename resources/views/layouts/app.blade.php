@@ -35,7 +35,7 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Iniciar Sesion') }}</a>
                                 </li>
                             @endif
 
@@ -54,7 +54,7 @@
                                     <a class="dropdown-item" href="{{route('productsAdmin')}}">Productos</a>
                                     <a class="dropdown-item" href="{{route('users')}}" >Usuarios</a>
                                     <a class="dropdown-item" href="{{route('categories')}}" >Categorias</a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item" href="{{route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
