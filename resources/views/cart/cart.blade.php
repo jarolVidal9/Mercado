@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container mt-3">
-        <show-categories></show-categories>
+    <shopping-cart :user_id="{{Auth::id()}}"></shopping-cart>
     </div>
 @endsection

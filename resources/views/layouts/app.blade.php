@@ -12,12 +12,18 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body>
+<body> 
+    @if(!in_array(Route::currentRouteName(), ['login', 'register']))
+    <div class="py-2 text-center" style="background-color: #fff159">
+        <h1 class="display-6 ">¡Bienvenido a nuestra tienda!</h1>
+        <p class="lead ">Descubre nuestras increíbles ofertas.</p>
+    </div>
+    @endif
     <div id="app">  
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    Mercado
+                   <strong>Mercado Libre</strong> 
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -41,7 +47,7 @@
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Registro') }}</a>
                                 </li>
                             @endif
                         @else
@@ -64,15 +70,22 @@
                                     </form>
                                 </div>
                             </li>
+                            <li class="nav-link"><a class="text-decoration-none text-black" href="{{ route('ShowCart') }}">Carrito</a></li>
                         @endguest
                     </ul>
                 </div>
+               
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="">
             @yield('content')
         </main>
     </div>
+    @if(!in_array(Route::currentRouteName(), ['login', 'register']))
+    <div class="bg-dark py-3 text-center mt-3">
+        <p class="text-white m-0">Derechos de autor &copy; 2023 | Todos los derechos reservados</p>
+    </div>
+    @endif
 </body>
 </html>

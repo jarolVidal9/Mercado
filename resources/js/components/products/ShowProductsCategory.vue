@@ -1,6 +1,6 @@
 <template>
-    <div class="container">
-        <h1>{{ categoryCopy.name }}</h1>
+    <div class="container shadow-lg p-3 mb-5 bg-body rounded">
+        <h5><strong class="ms-4">{{ categoryCopy.name }}</strong></h5>
             <div v-if="products.length>0">
                     <div class="d-flex justify-content-center flex-wrap m-2">
                         <div v-for="(product, index) in products" :key="index">
@@ -12,7 +12,7 @@
                                     class="card-img-top w-100 h-100 img-fluid" alt="...">
                                 </section>
                                 <div class="card-body h-50">
-                                    <h6><strong> ${{ product.price }}</strong></h6>
+                                    <h6><strong> ${{ product.price.toLocaleString() }}</strong></h6>
                                     <h6 class="card-title">{{ product.name }}</h6>
                                     <p class="card-text">Disponible: {{ product.stock }} unidades</p>
                                 </div>

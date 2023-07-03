@@ -4,8 +4,12 @@
             <div v-for="(categoryProduct, index) in categories" :key="index">
                 <div v-if="categoryProduct.products.length > 0" class="shadow-lg p-3 mb-5 bg-body rounded">
                     <div class="d-flex flex-wrap">
-                        <h6 class="me-5">Categoria: {{ categoryProduct.name }}</h6>
-                        <a name="" id="" class="" href="#" role="button" @click="RedirectProductsByCategory(categoryProduct.id)">ver mas...</a>
+                        <a class="text-decoration-none d-flex text-black ms-3" role="button" @click="RedirectProductsByCategory(categoryProduct.id)">
+                            <h5>
+                            <strong class="me-3"> Categoria: {{ categoryProduct.name }}</strong>
+                            ver mas...
+                            </h5>
+                        </a>
                     </div>
                     <div class="d-flex justify-content-center flex-wrap m-2">
                         <div v-for="(product, index) in categoryProduct.products" :key="index">
@@ -17,7 +21,7 @@
                                     class="card-img-top h-100" alt="...">
                                 </section>
                                 <div class="card-body h-50">
-                                    <h6><strong> ${{ product.price }}</strong></h6>
+                                    <h6><strong> ${{ product.price.toLocaleString() }}</strong></h6>
                                     <h6 class="card-title">{{ product.name }}</h6>
                                     <p class="card-text">Disponible: {{ product.stock }} unidades</p>
                                 </div>
@@ -33,14 +37,18 @@
                 </div>
             </section>
     </div>
-    
+    <section v-if="load_modal">
+        <product-modal :product_data="product"/>
+    </section>
 </template>
 
 <script>
+import ProductModal from './ModalViewProduct.vue'
 export default {
     data() {
         return {
             categories: [],
+            load_modal:false
         }
     },
     created() {

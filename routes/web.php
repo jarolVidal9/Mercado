@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -55,14 +57,20 @@ Route::group(['prefix'=>'categories','controller'=>CategoryController::class],fu
     Route::post('/EditCategory/{category}','editCategory');
     Route::delete('/DeleteCategory/{category}','deleteCategory');
 });
-
-
-
+Route::group(['prefix'=>'carts','controller'=>CartController::class],function (){
+    Route::get('/showCart','showCart')->name('ShowCart');
+    Route::get('/cart/{user}','cartForUser');
+});
 
 
 
 
 // LOGIN AND REGISTER
+Route::group(['controller'=>RegisterController::class],function(){
+    Route::get('register', 'showRegistrationForm')->name('register');
+    Route::post('register', 'register');
+});
+    
 
 Route::group(['controller' => LoginController::class], function () {
     Route::get('login', 'showLoginForm')->name('login');

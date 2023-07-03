@@ -21,7 +21,6 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
     protected $hidden = [
         'password',
     ];
@@ -30,7 +29,7 @@ class User extends Authenticatable
         $this->attributes['password']= bcrypt($value); 
     }
     public function Carts(){ 
-        return $this->hasMany(Cart::class,'cart_id','id');
+        return $this->hasMany(Cart::class,'user_id','id');
     }
 
 }
