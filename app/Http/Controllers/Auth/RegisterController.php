@@ -68,14 +68,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'number_id'=>$data['number_id'],
-            'name' => $data['name'],
-            'last_name'=>$data['last_name'],
-            'address'=>$data['address'],
-            'cellphone'=>$data['cellphone'],
+        $user = User::create([
+            'number_id' => $data['number_id'],
+            'name' => $data['name'],~~
+            'last_name' => $data['last_name'],
+            'address' => $data['address'],
+            'cellphone' => $data['cellphone'],
             'email' => $data['email'],
             'password' => $data['password'],
         ]);
+    
+        // Asignar el rol al usuario
+        $user->assignRole('user');
+    
+        return $user;
     }
 }

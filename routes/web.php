@@ -12,6 +12,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,13 +30,23 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::group(['prefix'=>'users','controller'=>UserController::class],function (){
+route::get('test',function (){
+    // Role::Create(['name'=>'user']);
+    $users = User::get();
+    foreach($users as $user){
+        if($user->number_id ==1007192405) $user->assignRole('admin');
+        else $user->assignRole('user');
+    }
+});
+
+Route::group(['prefix'=>'users','middleware'=>['auth','role:admin'],'controller'=>UserController::class],function (){
     route::get('/','showUsers')->name('users'); //vista
     Route::get('/GetAllUsers','getAllUsers');
     Route::get('/GetAUser/{user}','getAUser');
     Route::post('/CreateUser','createUser');
     Route::post('/EditUser/{user}','EditUser');
     Route::delete('/DeleteUser/{user}','deleteUser');
+    Route::get('GetAllRoles','getAllRoles');
 });
 
 Route::group(['prefix'=>'products','controller'=>ProductController::class],function (){
@@ -44,12 +56,15 @@ Route::group(['prefix'=>'products','controller'=>ProductController::class],funct
     Route::get('/GetAllProductsForCategory','getAllProductsForCategory');
     Route::get('/ProductsByCategory/{category}','productsByCategory');
     Route::get('/GetAProduct/{product}','getAProduct');
-    Route::post('/CreateProduct','createProduct');
-    Route::post('/EditProduct/{product}','editProduct');
-    Route::delete('/DeleteProduct/{product}','deleteProduct');
+    Route::group(['middleware'=>['auth','role:admin']],function(){
+        Route::post('/CreateProduct','createProduct');
+        Route::post('/EditProduct/{product}','editProduct');
+        Route::delete('/DeleteProduct/{product}','deleteProduct');
+    });
+    
 });
 
-Route::group(['prefix'=>'categories','controller'=>CategoryController::class],function (){
+Route::group(['prefix'=>'categories','middleware'=>['auth','role:admin'],'controller'=>CategoryController::class],function (){
     route::get('/','showCategories')->name('categories');//vista
     Route::get('/GetAllCategories','getAllCategories');
     Route::get('/GetACategory/{category}','getACategory');
@@ -57,12 +72,13 @@ Route::group(['prefix'=>'categories','controller'=>CategoryController::class],fu
     Route::post('/EditCategory/{category}','editCategory');
     Route::delete('/DeleteCategory/{category}','deleteCategory');
 });
-Route::group(['prefix'=>'carts','controller'=>CartController::class],function (){
+Route::group(['prefix'=>'carts','middleware'=>['auth','role:user'],'controller'=>CartController::class],function (){
     Route::get('/showCart','showCart')->name('ShowCart');
     Route::get('/cart/{user}','cartForUser');
     Route::post('/AddProduct','addProduct');
     Route::delete('/DeleteCart/{cart}','deleteCart');
 });
+
 
 
 

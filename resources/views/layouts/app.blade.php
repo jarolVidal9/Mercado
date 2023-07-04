@@ -57,20 +57,24 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{route('productsAdmin')}}">Productos</a>
-                                    <a class="dropdown-item" href="{{route('users')}}" >Usuarios</a>
-                                    <a class="dropdown-item" href="{{route('categories')}}" >Categorias</a>
+                                    @role('admin')
+                                        <a class="dropdown-item" href="{{route('productsAdmin')}}">Productos</a>
+                                        <a class="dropdown-item" href="{{route('users')}}" >Usuarios</a>
+                                        <a class="dropdown-item" href="{{route('categories')}}" >Categorias</a>
+                                    @endrole
                                     <a class="dropdown-item" href="{{route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Cerrar Sesión') }}
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>
                             </li>
-                            <li class="nav-link"><a class="text-decoration-none text-black" href="{{ route('ShowCart') }}">Carrito</a></li>
+                            @role('user')
+                                <li class="nav-link"><a class="text-decoration-none text-black" href="{{ route('ShowCart') }}">Carrito</a></li>
+                            @endrole
                         @endguest
                     </ul>
                 </div>

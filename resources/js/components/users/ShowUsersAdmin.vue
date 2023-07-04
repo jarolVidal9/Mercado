@@ -29,7 +29,7 @@
                         <td>{{ user.address }}</td>
                         <td>{{ user.cellphone }}</td>
                         <td>{{ user.email }}</td>
-                        <td>Admin</td>
+                        <td>{{ user.roles[0].name}}</td>
                         <td>
                             <div class="d-flex justify-content-start">
                                 <button @click="EditButton(user.id)" name="" id="" class="col btn btn-warning me-2"
