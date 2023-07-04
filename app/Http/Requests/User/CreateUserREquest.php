@@ -23,6 +23,7 @@ class CreateUserREquest extends FormRequest
             'cellphone'=>['required','numeric','unique:users,cellphone'],
             'email'=>['required','email','unique:users,email'],
             'password'=>['required','min:8','confirmed'],
+            'role'=>['required']
         ];
     }
     public function messages(){
@@ -51,6 +52,8 @@ class CreateUserREquest extends FormRequest
             'password.required'=>'La contraseña es requerida',
             'password.min'=>'La contraseña debe tener al menos 8 caracteres',
             'password.confirmed'=>'Las contraseñas no coincidenv  ',
+
+            'roles.required'=>'El rol es requerido'
 
 
         ];

@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Mercado</title>
     <!-- Fonts -->
+    <link rel="icon" href="./storage/images/mercado.png" />    
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <!-- Scripts -->
@@ -73,7 +74,7 @@
                                 </div>
                             </li>
                             @role('user')
-                                <li class="nav-link"><a class="text-decoration-none text-black" href="{{ route('ShowCart') }}">Carrito</a></li>
+                                <li class="nav-link"><a class="text-decoration-none text-black" href="{{ route('ShowCart') }}"><img src="/storage/images/carrito-de-compras.png" alt="" width="20" srcset=""> Carrito</a></li>
                             @endrole
                         @endguest
                     </ul>

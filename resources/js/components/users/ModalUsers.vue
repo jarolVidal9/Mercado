@@ -12,9 +12,11 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="" class="form-label">Tipo de Usuario</label>
-                                <select class="form-select" id="" v-model="user.roles[0].name">
-                                    <option v-for="(rol,index) in roles" :key="index" >{{ rol }}</option>
+                                <select class="form-select" v-model="user.roles[0].name" id="role">
+                                    <option v-for="(rol, index) in roles" :key="index">{{ rol }}</option>
                                 </select>
+
+                                <div style="color: red;" v-if="errors && errors.roles">{{ errors.roles[0] }}</div>
                             </div>
                             <div class="mb-3">
                                 <label for="number_id" class="form-label">Cedula:</label>
@@ -98,7 +100,12 @@ export default {
             this.getAllRoles()
         },
         setUser() {
-            if (!this.user_data) return
+            if (!this.user_data)
+            {
+                this.user.roles = [{ name: '' }];
+                return
+                
+            }    
             this.user = this.user_data
             this.is_create = false
         },
@@ -119,7 +126,6 @@ export default {
         async getAllRoles() {
             const { data } = await axios.get('users/GetAllRoles')
             this.roles = data.roles
-            console.log(this.roles);
         },
         async storeUser() {
             try {
