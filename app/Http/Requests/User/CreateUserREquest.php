@@ -53,7 +53,7 @@ class CreateUserREquest extends FormRequest
             'password.min'=>'La contraseña debe tener al menos 8 caracteres',
             'password.confirmed'=>'Las contraseñas no coincidenv  ',
 
-            'roles.required'=>'El rol es requerido'
+            'role.required'=>'El rol es requerido'
 
 
         ];

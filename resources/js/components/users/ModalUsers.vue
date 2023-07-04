@@ -15,8 +15,7 @@
                                 <select class="form-select" v-model="user.roles[0].name" id="role">
                                     <option v-for="(rol, index) in roles" :key="index">{{ rol }}</option>
                                 </select>
-
-                                <div style="color: red;" v-if="errors && errors.roles">{{ errors.roles[0] }}</div>
+                                <div style="color: red;" v-if="errors && errors.role">{{ errors.role[0] }}</div>
                             </div>
                             <div class="mb-3">
                                 <label for="number_id" class="form-label">Cedula:</label>

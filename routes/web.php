@@ -80,8 +80,6 @@ Route::group(['prefix'=>'carts','middleware'=>['auth','role:user'],'controller'=
 });
 
 
-
-
 // LOGIN AND REGISTER
 Route::group(['controller'=>RegisterController::class],function(){
     Route::get('register', 'showRegistrationForm')->name('register');
