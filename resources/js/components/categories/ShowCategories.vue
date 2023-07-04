@@ -26,7 +26,7 @@
                     <button @click="createCategory()" class="btn btn-success" href="#" role="button">Crear Categoria</button>
                 </div>
             </div>
-            <table class="table table-striped">
+            <table class="table table-striped" id="tableCategories">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">#</th>
@@ -73,6 +73,9 @@ export default {
             try {
                 const { data } = await axios.get('/api/categories/GetAllCategories')
                 this.categories = data.categories
+                this.$nextTick(() => {
+                    $('#tableCategories').DataTable()
+                })
             } catch (error) {
                 console.error(error);
             }

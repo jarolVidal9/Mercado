@@ -9,7 +9,7 @@
                     <button @click="CreateUser()" class="btn btn-success" href="#" role="button">Crear Usuario</button>
                 </div>
             </div>
-            <table class="table table-striped">
+            <table class="table table-striped" id="tableUsers">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">Documento</th>
@@ -88,6 +88,9 @@ export default {
             try {
                 const { data } = await axios.get('/api/users/GetAllUsers')
                 this.users = data.users
+                this.$nextTick(() => {
+                    $('#tableUsers').DataTable()
+                })
             } catch (error) {
                 console.error(error);
             }
