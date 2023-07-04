@@ -5,17 +5,21 @@
                     <div class="d-flex justify-content-center flex-wrap m-2">
                         <div v-for="(product, index) in products" :key="index">
                             <div class="card m-2" style="width: 12rem; height: 28rem;">
-                                <img v-if="product.image" :src="getImageUrl(product.image)"
-                                    class="card-img-top w-100 h-100 img-fluid" alt="...">
-                                <section v-else>
-                                    <img  src="https://images.pexels.com/photos/2582928/pexels-photo-2582928.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                                    class="card-img-top w-100 h-100 img-fluid" alt="...">
-                                </section>
+                                <a  role="button" @click="viewProduct(product)">
+                                <div class="card-img-container">
+                                        <img v-if="product.image" :src="getImageUrl(product.image)"
+                                        class="card-img-top card-img h-100" alt="...">
+                                        
+                                        <img v-else src="https://images.pexels.com/photos/2582928/pexels-photo-2582928.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                                            class="card-img-top card-img h-100" alt="...">
+                                    </div>
+                                
                                 <div class="card-body h-50">
                                     <h6><strong> ${{ product.price.toLocaleString() }}</strong></h6>
                                     <h6 class="card-title">{{ product.name }}</h6>
                                     <p class="card-text">Disponible: {{ product.stock }} unidades</p>
                                 </div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -26,16 +30,23 @@
                 </div>
             </section>
     </div>
+    <section v-if="load_modal">
+        <product-modal :data_product="product" :user_id="user_id"/>
+    </section>
 </template>
 
 <script>
-
+import ProductModal from './ModalViewProduct.vue'
 export default {
-    props:['category'],
+    props: ['category', 'user_id'],
+    components: {
+      ProductModal  
+    },
     data() {
         return {
             products: [],
-            categoryCopy: null
+            categoryCopy: null,
+            load_modal:false
         }
     },
     created() {
@@ -61,7 +72,26 @@ export default {
         },
         getImageUrl(imageName) {
             return  "/storage/images/" + imageName;
-        }
+        },
+        viewProduct(product) {
+            this.openModal()
+            this.product = product
+        },
+        openModal() {
+            this.load_modal = true;
+            setTimeout(() => {
+                this.modal = new bootstrap.Modal(document.getElementById('productModal'), {});
+                this.modal.show();
+                const modal = document.getElementById('productModal');
+                modal.addEventListener('hidden.bs.modal', () => {
+                    this.load_modal = false
+                    this.product_id = null
+                })
+            }, 200);
+        },
+        closeModal() {
+            this.modal.hide()
+        },
     }
 }
 </script>

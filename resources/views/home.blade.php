@@ -2,6 +2,10 @@
 
 @section('content')
     <div class="container mt-3">
-        <show-products/>
+        @if ( Auth::user())
+            <show-products :user_id="{{ Auth::user()->id}}" />
+        @else
+            <show-products />
+        @endif
     </div>
 @endsection

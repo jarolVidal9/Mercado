@@ -60,8 +60,9 @@ Route::group(['prefix'=>'categories','controller'=>CategoryController::class],fu
 Route::group(['prefix'=>'carts','controller'=>CartController::class],function (){
     Route::get('/showCart','showCart')->name('ShowCart');
     Route::get('/cart/{user}','cartForUser');
+    Route::post('/AddProduct','addProduct');
+    Route::delete('/DeleteCart/{cart}','deleteCart');
 });
-
 
 
 
